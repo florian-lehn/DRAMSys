@@ -552,7 +552,11 @@ void Controller::manageRequests(const sc_time& delay)
             // Align address to minimum burst length
             uint64_t alignedAddress =
                 transToAcquire.payload->get_address() & ~(minBytesPerBurst - UINT64_C(1));
-            transToAcquire.payload->set_address(alignedAddress);
+            // TODO fix:
+            // get for which burst length this transaction is naturally aligned
+            // and then chop it up accordingly,
+            // but DO NOT change the address of the transaction. gem5 doesnt like that
+            // transToAcquire.payload->set_address(alignedAddress);
 
             // continuous block of data that can be fetched with a single burst
             if ((alignedAddress / maxBytesPerBurst) ==
@@ -812,6 +816,22 @@ void Controller::end_of_simulation()
     std::cout << name() << std::string("  MAX BW:         ") << std::fixed << std::setprecision(2)
               << std::setw(6) << maxBandwidth << " Gb/s | " << std::setw(6) << maxBandwidth / 8
               << " GB/s | " << std::setw(6) << 100.0 << " %" << std::endl;
+}
+
+void Controller::serialize(std::ostream& stream) const
+{
+    for (auto& refreshManager : refreshManagers)
+    {
+        refreshManager->serialize(stream);
+    }
+}
+
+void Controller::deserialize(std::istream& stream)
+{
+    for (auto& refreshManager : refreshManagers)
+    {
+        refreshManager->deserialize(stream);
+    }
 }
 
 } // namespace DRAMSys

@@ -45,6 +45,8 @@
 #include "powerdown/PowerDownManagerIF.h"
 #include "refresh/RefreshManagerIF.h"
 #include "respqueue/RespQueueIF.h"
+#include "DRAMSys/common/Deserialize.h"
+#include "DRAMSys/common/Serialize.h"
 
 #include <DRAMSys/common/DebugManager.h>
 #include <DRAMSys/simulation/AddressDecoder.h>
@@ -55,13 +57,11 @@
 #include <tlm>
 #include <tlm_utils/simple_initiator_socket.h>
 #include <tlm_utils/simple_target_socket.h>
-#include <utility>
-#include <vector>
 
 namespace DRAMSys
 {
 
-class Controller : public sc_core::sc_module
+class Controller : public sc_core::sc_module, public Serialize, public Deserialize
 {
 public:
     tlm_utils::simple_target_socket<Controller> tSocket{"tSocket"};    // Arbiter side
@@ -75,6 +75,9 @@ public:
 
     [[nodiscard]] bool idle() const { return totalNumberOfPayloads == 0; }
     void registerIdleCallback(std::function<void()> idleCallback);
+
+    void serialize(std::ostream& stream) const override;
+    void deserialize(std::istream& stream) override;
 
 protected:
     void end_of_simulation() override;

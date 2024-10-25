@@ -160,9 +160,6 @@ if (NOT TARGET SystemC::systemc)
 
     # Set include directories to SYSTEM to suppress warnings
     set_target_properties(systemc PROPERTIES SYSTEM TRUE)
-else()
-    # Set include directories to SYSTEM to suppress warnings
-    set_target_properties(SystemC::systemc PROPERTIES SYSTEM TRUE)
 endif()
 
 
