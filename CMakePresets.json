@@ -49,6 +49,17 @@
             }
         },
         {
+            "name": "standard",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/build",
+            "inherits": [
+                "std"
+            ],
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
             "name": "ci-coverage",
             "binaryDir": "${sourceDir}/build/coverage",
             "inherits": "ci-common",
