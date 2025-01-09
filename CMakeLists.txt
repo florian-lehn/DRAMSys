@@ -97,7 +97,7 @@ option(DRAMSYS_BUILD_BENCHMARKS "Build DRAMSys benchmarks" OFF)
 option(DRAMSYS_BUILD_CLI "Build DRAMSys Command Line Tool" ON)
 option(DRAMSYS_BUILD_TRACE_ANALYZER "Build DRAMSys Trace Analyzer" OFF)
 option(DRAMSYS_WITH_DRAMPOWER "Build with DRAMPower support enabled." OFF)
-option(DRAMSYS_USE_EXTERNAL_SYSTEMC "Use an external SystemC installation." OFF)
+option(DRAMSYS_USE_EXTERNAL_SYSTEMC "Use an external SystemC installation." ON)
 
 ###############################################
 ###           Library Settings              ###
@@ -142,7 +142,8 @@ endif()
 
 ### SystemC ###
 if (DRAMSYS_USE_EXTERNAL_SYSTEMC)
-    list(APPEND CMAKE_PREFIX_PATH $ENV{SYSTEMC_HOME} /opt/systemc)
+    # list(APPEND CMAKE_PREFIX_PATH $ENV{SYSTEMC_HOME} /opt/systemc)
+    list(APPEND CMAKE_PREFIX_PATH $ENV{SYSTEMC_HOME_NEW} /opt/systemc)
     find_package(systemc NAMES SystemCLanguage)
 endif()
 
